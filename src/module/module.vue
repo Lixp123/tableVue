@@ -90,7 +90,16 @@
           </div>
       </el-row>
       <div class="text item">
-        <topTable :columns="columns" :dataSource="dataSource" :pagination="pagination"  @Select="select" @Change="onChange"></topTable>
+        <TopTable :columns="columns" :dataSource="dataSource" :pagination="pagination"  @Select="select" @Change="onChange" :isSelect="true">
+          <template #state="{ state }" >
+              <el-button   @click="operatEexamine(state)" type="text" size="small">
+                审核9
+              </el-button>
+              <el-button   @click="edit(scope.data)" type="text" size="small">
+                编辑
+              </el-button>
+           </template>
+        </topTable>
       </div>
     </el-card>
     <el-dialog
@@ -143,11 +152,6 @@ export default {
     return {
         columns: [
           {
-              title: '全选',
-              type:'selection',
-              width:'55px'
-          },
-          {
               title: '人脸',
               dataIndex: 'faceUrl',
               type:'image',
@@ -169,10 +173,6 @@ export default {
           {
               title: '年级/班别',
               dataIndex: 'gradeClass',
-              child:[
-                {title: '年级',dataIndex: 'gradeClass'},
-                {title: '班级级',dataIndex: 'gradeClass'},
-              ]
           },
           {
               title: '采集时间',
@@ -186,12 +186,7 @@ export default {
               title: '操作',
               dataIndex: 'on',
               width:'150px',
-              type:'operate',
-              operate:[
-                {name:'审核',click:this.operatEexamine},
-                {name:'编辑',click:this.edit},
-                {name:'禁用',click:this.Prohibit},
-              ]
+              slot:"state"
           },
         ],
         dataSource:[],
@@ -245,6 +240,7 @@ export default {
   },
   methods:{
     operatEexamine(row,data){//审核
+    console.log(row)
       this.singleVisible = true
     },
     edit(row,data){//编辑
@@ -273,9 +269,6 @@ export default {
     select(val){//全选
        console.log(val)
     },
-  },
-  components:{
-    topTable
   }
 }
 </script>

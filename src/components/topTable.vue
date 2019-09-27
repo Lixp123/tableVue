@@ -2,6 +2,8 @@
   <el-row>
     <el-col :span="24">
       <el-table
+        v-bind="$props"
+        v-loading="$store.state.startData.loading"
         ref="multipleTable"
         :border="true"
         :header-cell-style="{background:'#a4aec7',color:'#fff',textAlign:'center'}"
@@ -11,103 +13,113 @@
         style="width: 100%">
 
         <el-table-column
-          v-if="columns.length>0 && columns[0].type=='selection'?true:false"
+          v-if="isSelect"
           type="selection"
           width="55">
         </el-table-column>
 
         <el-table-column
            v-for="(item,key) in columns"
-           v-if="item.type=='selection'?false:true"
           :key="key"
           :prop="item.dataIndex"
           :width="item.width?item.width:'auto'"
-          :type="item.type=='selection'?'selection':''"
           :label="item.title">
 
               <template  slot-scope="scope">
-                <div v-if="!item.type">
+                <div v-if="!item.type && !item.slot">
                   {{scope.row[item.dataIndex]}}
                 </div>
-                <div v-if="item.type && item.type =='image'">
-                     <img src="../../build/logo.png" :width="item.width?parseFloat(item.width)-15:'100'" style="margin: 0 auto;"/>
-                </div>
-                <div v-if="item.type == 'operate' && item.operate">
-                  <el-button v-for="items in item.operate" :key="items.name"  @click="handleClick(scope.row,items.click)" type="text" size="small">
-                    {{items.name}}
-                  </el-button>
-                </div>
+                <slot v-if="item.slot" :name="item.slot" v-bind:[item.slot]="scope.row"></slot>
               </template>
 
               <el-table-column
-                  v-if="item.child"
-                  v-for="items in item.child"
+                  v-shwo="item.child"
+                  v-for="(items,key) in item.child"
+                  :key="key"
                   :prop="items.dataIndex"
                   :label="items.title"
-                  :width="item.width?item.width:'auto'">
+                  :width="items.width?items.width:'auto'">
+                  <template  slot-scope="scope">
+                    <div v-if="!items.type && !items.slot">
+                      {{scope.row[items.dataIndex]}}
+                    </div>
+                     <slot v-if="items.slot" :name="items.slot" v-bind:[items.slot]="scope.row"></slot>
+                  </template>
               </el-table-column>
+
         </el-table-column>
 
       </el-table>
     </el-col>
-    <el-col :span="24" style="overflow: hidden;" v-if="pagination">
+    <el-col :span="24" style="overflow: hidden;" v-if="pagination && isPag">
       <div class="my-page">
         <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="pagination && pagination.current"
+        :current-page.sync="pagination && pagination.pageIndex"
         :page-size="10"
         layout="prev, pager, next, jumper"
-        :total="pagination && pagination.total">
+        :total="pagination && pagination.totalCount">
         </el-pagination>
+       </div>
+       <div class="my-page" style="padding-top: 7px;margin-right: 15px;color:#606266">
+         共{{pagination && pagination.totalCount}}条
        </div>
     </el-col>
-     <el-col :span="24" style="overflow: hidden;" v-if="!pagination">
+     <el-col :span="24" style="overflow: hidden;" v-if="!pagination && isPag">
       <div class="my-page">
         <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page.sync="myPagination.current"
+        :current-page.sync="myPagination.pageIndex"
         :page-size="10"
         layout="prev, pager, next, jumper"
-        :total="myPagination.total">
+        :total="myPagination.totalCount">
         </el-pagination>
        </div>
+      <div class="my-page" style="padding-top: 7px;margin-right: 15px;color:#606266">
+        共{{pagination && pagination.totalCount}}条
+      </div>
     </el-col>
   </el-row>
 </template>
-
+<!-- 列表table组件 -->
 <script>
 //@Select列表多选函数
 //@Change分页
+// import helpers from '../helpers.js'
 export default {
   name: 'topTable',
   props:{
-      columns:{ type : Array , default : [] , required : true },//表头,type为image图片，operate为操作，selection多行选择
+      columns:{ type : Array , default : [] , required : true },//表头,type为image图片，operate为操作，selection多行选择，有slot值时type将失效
       dataSource:{ type : Array , default : [] , required : true },//列表数据
       pagination:{ type : Object | String , default : '' , required : false },//分页
+      isPag:{type : Boolean , default : true , required : false},
+      isSelect:{type : Boolean , default : false , required : false},//是否有选择check
   },
   data () {
     return {
         data:[],//后台不分页全部数据
         myData:[],//不分页一页数据
+        // hostName:helpers.hostName,
         myPagination:{
-          total:0,
-          current:1
+          totalCount:0,
+          pageIndex:1
         }
     }
   },
   created(){
-    console.log(this.pagination)
-    if(!this.pagination){
+    if(!this.pagination && this.isPag){
       this.data = JSON.parse(JSON.stringify(this.dataSource))
       let data = JSON.parse(JSON.stringify(this.data))
       let myData = data.splice(0,10)
       this.myPagination= {
-        total:this.data.length,
-        current:1
+        totalCount:this.data.length,
+        pageIndex:1
       }
       this.myData = myData
+    }else{
+      this.myData = this.dataSource
     }
   },
   methods:{
@@ -124,8 +136,8 @@ export default {
         let data = JSON.parse(JSON.stringify(this.data))
         let myData = data.splice((val-1)*10,10)
         this.myPagination= {
-          total:this.data.length,
-          current:val
+          totalCount:this.data.length,
+          pageIndex:val
         }
         this.myData = myData
       }else{//后端

@@ -14,7 +14,6 @@ const mutations = {
 
 const actions = {
   addOne:({commit},data)=>{
-    console.log(startData)
     return startData.getMallrankings({})
     .then(res=>{
          commit('setData')
