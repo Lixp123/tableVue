@@ -93,7 +93,7 @@
         <TopTable :columns="columns" :dataSource="dataSource" :pagination="pagination"  @Select="select" @Change="onChange" :isSelect="true">
           <template #state="{ state }" >
               <el-button   @click="operatEexamine(state)" type="text" size="small">
-                审核9
+                审核
               </el-button>
               <el-button   @click="edit(scope.data)" type="text" size="small">
                 编辑
@@ -145,7 +145,6 @@
 </template>
 
 <script>
-import topTable from '@/components/topTable.vue'
 export default {
   name: 'module',
   data () {
@@ -173,6 +172,16 @@ export default {
           {
               title: '年级/班别',
               dataIndex: 'gradeClass',
+              child:[
+                {
+                  title: '年级',
+                  dataIndex: 'grade'
+                },
+                {
+                  title: '班别',
+                  dataIndex: 'class'
+                }
+              ]
           },
           {
               title: '采集时间',
@@ -191,9 +200,9 @@ export default {
         ],
         dataSource:[],
         pagination:{
-          total:1000,//多少页
+          totalCount:1000,//多少页
           defaultPageSize:10,//多少条
-          currentPage:1,//当前页
+          pageIndex:1,//当前页
         },
         formData: {
           grade: '',
@@ -230,13 +239,14 @@ export default {
   created(){
     let dataSource = []//模拟数据
     for(let i=1;i<11;i++){
-      let obj ={id:1,date:'2019-3-11',name:'大鹏',faceUrl:'771',sex:'女',papers:'36253215546254',gradeClass:'一年级/一班',state:'未审核'}
+      let obj ={id:1,date:'2019-3-11',name:'大鹏',faceUrl:'771',sex:'女',papers:'36253215546254',grade:'一',class:'二年级',gradeClass:'一年级/一班',state:'未审核'}
       obj.id = i
       obj.papers +=i
       obj.name ='大鹏'+i
       dataSource.push(obj)
     }
     this.dataSource = dataSource
+    
   },
   methods:{
     operatEexamine(row,data){//审核

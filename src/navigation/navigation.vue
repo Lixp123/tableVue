@@ -9,12 +9,16 @@
         @select="handSelect"
         class="my-menu"
      >
-        <el-submenu v-for="(item,key) in myMenu" :index="item.path" :key="key" class="my-menu" v-if="item.show">
+        <el-submenu 
+          v-for="(item,key) in getMenu"
+          :key="key" 
+          :index="item.path" 
+          class="my-menu" >
           <template slot="title"  >
             <div class="my-submenu" style="font-size: 16px;">{{item.name}}</div>
           </template>
           <div style="background: #edf1f7;text-align: left;">
-            <el-menu-item v-for="itemChilder in item.children" :key="itemChilder.path" class="my-menu-item " :index="item.path+'/'+itemChilder.path" v-if="itemChilder.show">
+            <el-menu-item v-for="itemChilder in getChildren(item.children)" :key="itemChilder.path" class="my-menu-item " :index="item.path+'/'+itemChilder.path">
               <span style="font-size: 14px;padding-left: 40px;">{{itemChilder.name}}</span>
             </el-menu-item>
           </div>
@@ -30,7 +34,7 @@
 </template>
 
 <script>
-import route from '@/router/index.js'
+import * as routers from '@/router/index.js'
 export default {
   name: 'navigation',
   data () {
@@ -40,12 +44,25 @@ export default {
       fullPath:''
     }
   },
+  computed:{
+    getMenu(){
+      return this.myMenu.filter(item=>{
+        return item.show
+      })
+    }
+  },
   created(){
-      this.myMenu = route && route.routes
-      console.log(this.$route.fullPath)
+      let root = this.$router.history && this.$router.history.current && this.$router.history.current.path
+      let arr = root.split('/')
+      this.myMenu = arr && arr[1] && routers[arr[1]]
       this.fullPath = this.$route.fullPath
   },
   methods:{
+      getChildren(data){
+        return data.filter(item=>{
+          return item.show
+        })
+      },
       // addOne(){
       //   const { dispatch } = this.$store
       //   dispatch({type:'startData/addOne',payload:{data:1}})

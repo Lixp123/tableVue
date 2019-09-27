@@ -11,7 +11,9 @@ const mutations = {
     state.count++
   }
 }
-
+const getters = {
+  evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
+}
 const actions = {
   addOne:({commit},data)=>{
     return startData.getMallrankings({})
@@ -28,9 +30,7 @@ const actions = {
   },
 }
 
-const getters = {
-  evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
-}
+
 export default {
       namespaced: true,
       state,

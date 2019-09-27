@@ -1,11 +1,11 @@
-
-import Navigation from '@/navigation/navigation'
-import Module from '@/module/module'
-import StudentNew from '@/module/studentNew'
-export default  {
-  routes: [
+//输出的name要和对象中的path相同
+import Navigation from '@/navigation/navigation.vue'
+import Module from '@/module/module.vue'
+import StudentNew from '@/module/studentNew.vue'
+import Login from '@/module/Login.vue'
+export const studentMenu = [
     {
-      path: '/face',
+      path: '/studentMenu',
       name: '人脸库管理',
       component: Navigation,
       show:true,
@@ -17,7 +17,7 @@ export default  {
       ]
     },
     {
-      path: '/attendance',
+      path: '/studentMenu',
       name: '考勤管理',
       component: Navigation,
       show:true,
@@ -25,12 +25,27 @@ export default  {
         {path:'studentRecord',name:'学生考勤记录',component:Module,show:true},
         {path:'facultyRecord',name:'教职工考勤记录',component:Module,show:true},
       ]
-    },
+    }
+]
+
+export const testMenu = [
     {
-      path: '/',//刚进入
-      name: '人脸库管理',
+      path: '/testMenu',
+      name: '测试导航栏',
       component: Navigation,
-      show:false
-    },
+      show:true,
+      children:[
+        {path:'bar1',name:'导航栏1',component:Module,show:true},
+        {path:'bar2',name:'导航栏3',component:Module,show:true},
+        {path:'bar3',name:'导航栏4',component:Module,show:true}
+      ]
+    }
   ]
-}
+
+export const loginMenu = [
+  {
+    path: '/',
+    name: '测试多个导航栏',
+    component: Login
+  }
+]

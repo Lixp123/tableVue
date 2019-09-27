@@ -29,12 +29,11 @@
                 <div v-if="!item.type && !item.slot">
                   {{scope.row[item.dataIndex]}}
                 </div>
-                <slot v-if="item.slot" :name="item.slot" v-bind:[item.slot]="scope.row"></slot>
+                <slot v-if="item.slot" :name="item.slot" v-bind:[item[slot]]="scope.row"></slot>
               </template>
 
               <el-table-column
-                  v-shwo="item.child"
-                  v-for="(items,key) in item.child"
+                  v-for="(items,key) in item.child?item.child:[]"
                   :key="key"
                   :prop="items.dataIndex"
                   :label="items.title"
@@ -43,7 +42,7 @@
                     <div v-if="!items.type && !items.slot">
                       {{scope.row[items.dataIndex]}}
                     </div>
-                     <slot v-if="items.slot" :name="items.slot" v-bind:[items.slot]="scope.row"></slot>
+                     <slot v-if="items.slot" :name="items.slot" v-bind:[items[slot]]="scope.row"></slot>
                   </template>
               </el-table-column>
 
@@ -89,7 +88,7 @@
 //@Change分页
 // import helpers from '../helpers.js'
 export default {
-  name: 'topTable',
+  name: 'TopTable',
   props:{
       columns:{ type : Array , default : [] , required : true },//表头,type为image图片，operate为操作，selection多行选择，有slot值时type将失效
       dataSource:{ type : Array , default : [] , required : true },//列表数据
@@ -105,7 +104,8 @@ export default {
         myPagination:{
           totalCount:0,
           pageIndex:1
-        }
+        },
+        slot:'slot',//编辑器报错
     }
   },
   created(){
