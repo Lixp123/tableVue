@@ -1,5 +1,4 @@
-import startData from './startData'
-
+import * as startData from './startData'
 export  {
   startData
 }

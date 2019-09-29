@@ -26,7 +26,7 @@
       </el-menu>
     </div>
     <div class="my-keep">
-     <keep-alive>
+     <keep-alive :include="include">
         <router-view/>
      </keep-alive>
    </div>
@@ -41,7 +41,9 @@ export default {
     return {
       myMenu: [],
       count: this.$store.state.startData.count,
-      fullPath:''
+      fullPath:'',
+      include:[],
+      allMenu:[]
     }
   },
   computed:{
@@ -51,17 +53,48 @@ export default {
       })
     }
   },
+  beforeUpdate(){
+     this.setMenu()
+     this.setInclude()
+  },
   created(){
-      let root = this.$router.history && this.$router.history.current && this.$router.history.current.path
-      let arr = root.split('/')
-      this.myMenu = arr && arr[1] && routers[arr[1]]
+      this.setMenu()
+      this.setInclude()
       this.fullPath = this.$route.fullPath
   },
   methods:{
+      setMenu(){
+        let root = this.$router.history && this.$router.history.current && this.$router.history.current.path
+        let arr = root.split('/')
+        this.myMenu = arr && arr[1] && routers[arr[1]]
+      },
       getChildren(data){
         return data.filter(item=>{
           return item.show
         })
+      },
+      setInclude(){
+          let allMenu = []
+          let paths = []
+          let index = ''
+          this.myMenu.forEach(item=>{
+            item.children && item.children.length>0 && item.children.forEach(items=>{
+              if(items.show){
+                allMenu.push(items.name);
+                paths.push(items.path)
+              }
+            })
+          })
+          this.allMenu = allMenu
+          paths.forEach((item,key)=>{
+            if(this.$route.path.indexOf(item)>=0){
+              index = key
+            }
+          })
+          if(index !==''){
+            this.fullPath = allMenu[index]
+            this.include = [allMenu[index]]
+          }
       },
       // addOne(){
       //   const { dispatch } = this.$store
@@ -74,7 +107,6 @@ export default {
       },
       handSelect(key, keyPath){
         if(this.$router && this.$route.fullPath != key){
-          console.log(key)
             this.$router.pops(key)
         }
         
