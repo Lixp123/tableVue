@@ -15,11 +15,11 @@
           :index="item.path" 
           class="my-menu" >
           <template slot="title"  >
-            <div class="my-submenu" style="font-size: 16px;">{{item.name}}</div>
+            <div class="my-submenu" style="font-size: 16px;">{{item.title}}</div>
           </template>
           <div style="background: #edf1f7;text-align: left;">
             <el-menu-item v-for="itemChilder in getChildren(item.children)" :key="itemChilder.path" class="my-menu-item " :index="item.path+'/'+itemChilder.path">
-              <span style="font-size: 14px;padding-left: 40px;">{{itemChilder.name}}</span>
+              <span style="font-size: 14px;padding-left: 40px;">{{itemChilder.title}}</span>
             </el-menu-item>
           </div>
         </el-submenu>
@@ -74,9 +74,10 @@ export default {
       },
       handSelect(key, keyPath){
         if(this.$router && this.$route.fullPath != key){
-            this.$router.push(key)
+          console.log(key)
+            this.$router.pops(key)
         }
-
+        
       }
   }
 }

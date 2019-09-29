@@ -19,6 +19,20 @@ let store = new Vuex.Store(stores)
 Object.keys(assembly).forEach(item=>{//自定义组件
   Vue.component(item,assembly[item])
 })
+
+router.pops = function(obj){//存params中数据
+  if(obj && obj.params && obj.name){
+    sessionStorage.setItem(obj.name,JSON.stringify(obj.params))
+  }
+  router.push(obj)
+}
+router.getData = function(){//刷新获取存params中数据
+  if(router.history && router.history.current && router.history.current.name){
+    return JSON.parse(sessionStorage.getItem(router.history.current.name))
+  }else{
+    return ''
+  }
+}
 Vue.config.productionTip = true//调试
 new Vue({
   el: '#app',

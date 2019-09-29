@@ -107,9 +107,6 @@
 </template>
 
 <script>
-import PanelComponent from '@/components/PanelComponent.vue'
-import PhotoWall from '@/components/PhotoWall.vue'
-import MySwitch from '@/components/MySwitch.vue'
 export default {
   name: 'studentNew',
   data () {
@@ -124,20 +121,20 @@ export default {
     }
   },
   created(){
-
+    console.log(this.$router.getData(),885,this.$router)
   },
   methods:{
       getStudentUrl(arr,obj,type){//学生图片数据
-        console.log(arr,obj,type,7)
+        // console.log(arr,obj,type,7)
       },
       studentExamine(obj){//学生审核
-        console.log(obj,8)
+        // console.log(obj,8)
       },
       getFatherUrl(arr,obj,type){//父亲图片数据
-        console.log(arr,obj,type,1)
+        // console.log(arr,obj,type,1)
       },
       examine(obj){//审核
-        console.log(obj,2)
+        // console.log(obj,2)
       },
       submitForm(formName){
         this.$refs[formName].validate((valid) => {
@@ -148,11 +145,6 @@ export default {
           }
         });
       }
-  },
-  components:{
-    PanelComponent,
-    PhotoWall,
-    MySwitch
   }
 }
 </script>

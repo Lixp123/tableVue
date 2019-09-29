@@ -95,7 +95,7 @@
               <el-button   @click="operatEexamine(state)" type="text" size="small">
                 审核
               </el-button>
-              <el-button   @click="edit(scope.data)" type="text" size="small">
+              <el-button   @click="edit(state)" type="text" size="small">
                 编辑
               </el-button>
            </template>
@@ -253,8 +253,8 @@ export default {
     console.log(row)
       this.singleVisible = true
     },
-    edit(row,data){//编辑
-      this.$router.push('/face/student/edit')
+    edit(row){//编辑
+      this.$router.pops({ name: 'studentNew', params: { id: 'studentNew' ,data:{se:99,sdw:88}}})
     },
     Prohibit(row){//禁用
 
