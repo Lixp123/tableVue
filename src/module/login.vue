@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
    
-
+    <Calendar :arr="[]"/>
   </div>
 </template>
 

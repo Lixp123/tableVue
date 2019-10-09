@@ -3,7 +3,7 @@
 
     <div style="border: 1px solid #edf1f7;padding:20px;border-radius: 10px;" v-if="imgUrl.length>0">
       <div>
-        <div v-for="item in imgUrl" style="position: relative;display: inline-block;">
+        <div v-for="item in imgUrl" :key="item" style="position: relative;display: inline-block;">
           <img  :src="item.url" class="my-image">
           <div class="my-active">待审核</div>
         </div>
