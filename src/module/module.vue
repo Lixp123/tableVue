@@ -90,7 +90,7 @@
           </div>
       </el-row>
       <div class="text item">
-        <TopTable :columns="columns" :dataSource="dataSource" :pagination="pagination"  @Select="select" @Change="onChange" :isSelect="true">
+        <TopTable :columns="columns"  :dataSource="dataSource" :pagination="pagination"  @Select="select" @Change="onChange" :isSelect="true" v-bind="{stripe:true}">
           <template #state="{ state }" >
               <el-button   @click="operatEexamine(state)" type="text" size="small">
                 审核
@@ -98,7 +98,7 @@
               <el-button   @click="edit(state)" type="text" size="small">
                 编辑
               </el-button>
-           </template>
+          </template>
         </topTable>
       </div>
     </el-card>

@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="24">
       <el-table
-        v-bind="$props"
+        v-bind="$attrs"
         v-loading="$store.state.startData.loading"
         ref="multipleTable"
         :border="true"
