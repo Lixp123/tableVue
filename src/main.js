@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Vuex from 'vuex'
 import App from './App'
 import * as routers from './router/index.js'
+import * as filters from './router/filters.js'
 import stores from './store'
 import ElementUI from 'element-ui'
 import assembly from './components/index.js'
@@ -18,6 +19,10 @@ let router = new Router({routes:arr})
 let store = new Vuex.Store(stores)
 Object.keys(assembly).forEach(item=>{//自定义组件
   Vue.component(item,assembly[item])
+})
+
+Object.keys(filters).forEach(item=>{//过滤
+  Vue.filter(item,filters[item])
 })
 
 router.pops = function(obj){//存params中数据

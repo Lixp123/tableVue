@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    {{num}}
+    {{num | stryReverse}}
     <Calendar :arr="[1,2]" data="111">
     </Calendar>
   </div>
@@ -11,7 +11,7 @@ export default {
   name: 'module',
   data () {
     return {
-      num:1
+      num:'123456'
     }
   },
   created(){
