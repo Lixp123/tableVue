@@ -12,7 +12,7 @@ export const studentMenu = [
       show:true,
       children:[
         {path:'student',name:'student',title:'学生人脸库',component:Module,show:true},
-        {path:'student/:id',name:'studentNew',title:'学生人脸库编辑',component:StudentNew,show:false},
+        {path:'student/:id',name:'studentNew',title:'学生人脸库编辑',component:StudentNew,show:false,props:true},
       ]
     },
     {
