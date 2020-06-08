@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import * as routers from '@/router/index.js'
+import  routers from '@/router/index.js'
 export default {
   name: 'navigation',
   data () {
@@ -65,8 +65,9 @@ export default {
   methods:{
       setMenu(){
         let root = this.$router.history && this.$router.history.current && this.$router.history.current.path
-        let arr = root.split('/')
-        this.myMenu = arr && arr[1] && routers[arr[1]]
+        if(root.split('/')[1] == 'studentMenu'){
+           this.myMenu = routers[0].children
+        }       
       },
       getChildren(data){
         return data.filter(item=>{

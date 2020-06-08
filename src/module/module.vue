@@ -236,7 +236,7 @@ export default {
         imgExamine:['','','','']//单个审核
     }
   },
-  created(){
+  mounted(){
     let dataSource = []//模拟数据
     for(let i=1;i<11;i++){
       let obj ={id:1,date:'2019-3-11',name:'大鹏',faceUrl:'771',sex:'女',papers:'36253215546254',grade:'一',class:'二年级',gradeClass:'一年级/一班',state:'未审核'}
@@ -246,7 +246,6 @@ export default {
       dataSource.push(obj)
     }
     this.dataSource = dataSource
-    
   },
   methods:{
     operatEexamine(row,data){//审核

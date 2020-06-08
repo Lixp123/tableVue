@@ -120,8 +120,8 @@ export default {
       },
     }
   },
-  created(){
-    console.log(this.$router.getData(),885,this.$router)
+  mounted(){
+  
   },
   methods:{
       getStudentUrl(arr,obj,type){//学生图片数据
