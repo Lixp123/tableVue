@@ -1,9 +1,11 @@
 //输出的name要和对象中的path相同
 import Navigation from '@/navigation/navigation.vue'
-import Module from '@/module/module.vue'
-import StudentNew from '@/module/studentNew.vue'
-import Login from '@/module/Login.vue'
+import Module from '@/app/module.vue'
+import StudentNew from '@/app/studentNew.vue'
+import Login from '@/app/Login.vue'
 import Child from '@/navigation/child'
+import  setHook  from '../components/hook.js'
+let hook =  setHook(Login)
 export default  [
     {
       path: '/studentMenu',
@@ -24,5 +26,12 @@ export default  [
           ]
         },
       ]
+    },
+    {
+      path: '/login',
+      title: '登录',
+      name:'login',
+      component:hook,
+      show:false,
     }
 ]
